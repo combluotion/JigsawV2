@@ -80,9 +80,12 @@ public class JigsawGridAdapter extends BaseAdapter implements OrderableAdapter{
 
         ImageView view = new ImageView(context);
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        view.setLayoutParams(new GridView.LayoutParams(d.getWidth(), d.getHeight()));
+        //view.setLayoutParams(new GridView.LayoutParams(d.getWidth(), d.getHeight()));
+        view.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        view.setAdjustViewBounds(true);
         view.setPadding(1, 1, 1, 1);
         view.setImageDrawable(new BitmapDrawable(context.getResources(), d));
+
 
         return view;
     }

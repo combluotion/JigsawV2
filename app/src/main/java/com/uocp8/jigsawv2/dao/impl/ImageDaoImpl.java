@@ -3,6 +3,7 @@ package com.uocp8.jigsawv2.dao.impl;
 import static com.uocp8.jigsawv2.util.Base64Util.base64ToBitmap;
 import static com.uocp8.jigsawv2.util.DBUtil.ALL_COLUMNS;
 import static com.uocp8.jigsawv2.util.DBUtil.DESC_COLUMN;
+import static com.uocp8.jigsawv2.util.DBUtil.IDEAL_POSITION;
 import static com.uocp8.jigsawv2.util.DBUtil.ID_COLUMN;
 import static com.uocp8.jigsawv2.util.DBUtil.ID_SELECTION;
 import static com.uocp8.jigsawv2.util.DBUtil.IMAGE_COLUMN;
@@ -120,8 +121,10 @@ public class ImageDaoImpl implements ImageDao {
         Long originalId = cursor.getLong(getIndex(cursor, ORIGINAL_COLUMN));
         Long id = cursor.getLong(getIndex(cursor, ID_COLUMN));
 
+        Long idealPosition = cursor.getLong(getIndex(cursor, IDEAL_POSITION));
+
         Log.d(TAG, "image entity found with name: " + name);
-        ImageEntity entity = new ImageEntity(base64ToBitmap(base64String), name, desc, originalId);
+        ImageEntity entity = new ImageEntity(base64ToBitmap(base64String), name, desc, originalId, idealPosition);
         entity.setId(id);
 
         return entity;

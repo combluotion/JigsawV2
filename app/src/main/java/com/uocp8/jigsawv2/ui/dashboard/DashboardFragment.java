@@ -20,6 +20,7 @@ import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.databinding.FragmentDashboardBinding;
 import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.tasks.JigsawGenerator;
+import com.uocp8.jigsawv2.util.GridUtil;
 
 public class DashboardFragment extends Fragment {
 
@@ -74,7 +75,8 @@ public class DashboardFragment extends Fragment {
 
     private void createJigsaw(int which)
     {
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.image1);
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.image2);
+        //bitmap = GridUtil.getResizedBitmap(bitmap, 1480, 1300, false);
         JigsawGenerator task = new JigsawGenerator(getContext(), Difficulty.fromValue(which));
 
 

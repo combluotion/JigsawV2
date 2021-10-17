@@ -45,5 +45,7 @@ public class JigsawLoader extends AsyncTask<Long, Integer, List<Bitmap>> {
 
         gridView.setAdapter(adapter);
         gridView.setNumColumns(pieces);
+        //gridView.setColumnWidth(tiles.get(0).getWidth());
+
     }
 }

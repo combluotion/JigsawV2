@@ -43,6 +43,8 @@ public class JigsawServiceImpl  implements JigsawService {
     private Long createImageTiles(Bitmap original, int n) {
         Long originalId = saveOriginal(original);
 
+        Long idealPosition = 0L;
+
         int w = original.getWidth();
         int h = original.getHeight();
 
@@ -52,7 +54,8 @@ public class JigsawServiceImpl  implements JigsawService {
         for (int y = 0; y + tileHeight <= h; y += tileHeight) {
             for (int x = 0; x + tileWidth <= w; x += tileWidth) {
                 Bitmap tile = Bitmap.createBitmap(original, x, y, tileWidth, tileHeight);
-                saveTile(tile, x, y, originalId);
+                saveTile(tile, x, y, originalId, idealPosition);
+                idealPosition++;
             }
         }
 
@@ -69,7 +72,7 @@ public class JigsawServiceImpl  implements JigsawService {
         String desc = "original image " + name;
         Log.d(TAG, "image name: " + name);
 
-        return saveEntity(original, name, desc, null);
+        return saveEntity(original, name, desc, null, null);
     }
 
     /**
@@ -79,12 +82,12 @@ public class JigsawServiceImpl  implements JigsawService {
      * @param x the tile's x coordinate
      * @param y the tile's y coordinate
      */
-    private void saveTile(Bitmap tile, int x, int y, Long originalId) {
+    private void saveTile(Bitmap tile, int x, int y, Long originalId, Long idealPosition) {
         String name = "tile-" + x + "-" + y + ".png";
         String desc = "sub image " + name;
         Log.d(TAG, "image name: " + name);
 
-        saveEntity(tile, name, desc, originalId);
+        saveEntity(tile, name, desc, originalId, idealPosition);
     }
 
     /**
@@ -94,7 +97,7 @@ public class JigsawServiceImpl  implements JigsawService {
      * @param name the name
      * @param desc the description
      */
-    private Long saveEntity(Bitmap image, String name, String desc, Long originalId) {
-        return dao.create(new ImageEntity(image, name, desc, originalId));
+    private Long saveEntity(Bitmap image, String name, String desc, Long originalId, Long idealPosition) {
+        return dao.create(new ImageEntity(image, name, desc, originalId, idealPosition));
     }
 }

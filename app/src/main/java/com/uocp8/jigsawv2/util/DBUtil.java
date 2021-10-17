@@ -1,7 +1,7 @@
 package com.uocp8.jigsawv2.util;
 
 public final class DBUtil {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "jigsaw.db";
     public static final String JIGSAW_TABLE = "jigsaw_images";
     public static final String NAME_COLUMN = "name";
@@ -9,7 +9,7 @@ public final class DBUtil {
     public static final String IMAGE_COLUMN = "img";
     public static final String DESC_COLUMN = "desc";
     public static final String ORIGINAL_COLUMN = "original";
-
+    public static final String IDEAL_POSITION = "idealposition";
     public static final String SCORE_TABLE = "jigsaw_score";
 
     private DBUtil() {}
@@ -20,7 +20,8 @@ public final class DBUtil {
             + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + NAME_COLUMN + " TEXT,"
             + IMAGE_COLUMN + " TEXT," + DESC_COLUMN + " TEXT,"
-            + ORIGINAL_COLUMN + " INTEGER);";
+            + ORIGINAL_COLUMN + " INTEGER,"
+            + IDEAL_POSITION + " INTEGER);";
 
     /** drop jigsaw_images table */
     public static final String DROP_JIGSAW_TABLE = "drop table if exists " +
@@ -37,7 +38,7 @@ public final class DBUtil {
 
     /** all columns selection */
     public final static String[] ALL_COLUMNS = new String[]{ID_COLUMN, NAME_COLUMN,
-            IMAGE_COLUMN, DESC_COLUMN, ORIGINAL_COLUMN};
+            IMAGE_COLUMN, DESC_COLUMN, ORIGINAL_COLUMN, IDEAL_POSITION};
 
     /** arguments to set for the prepared statements */
     public static String[] getIdArguments(final Long id) {

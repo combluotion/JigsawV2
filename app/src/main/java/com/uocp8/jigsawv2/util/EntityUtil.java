@@ -2,6 +2,7 @@ package com.uocp8.jigsawv2.util;
 
 import static com.uocp8.jigsawv2.util.Base64Util.bitMapToBase64;
 import static com.uocp8.jigsawv2.util.DBUtil.DESC_COLUMN;
+import static com.uocp8.jigsawv2.util.DBUtil.IDEAL_POSITION;
 import static com.uocp8.jigsawv2.util.DBUtil.IMAGE_COLUMN;
 import static com.uocp8.jigsawv2.util.DBUtil.NAME_COLUMN;
 import static com.uocp8.jigsawv2.util.DBUtil.ORIGINAL_COLUMN;
@@ -25,6 +26,7 @@ public final class EntityUtil {
         cv.put(IMAGE_COLUMN, bitMapToBase64(entity.getImage()));
         cv.put(DESC_COLUMN, entity.getDesc());
         cv.put(ORIGINAL_COLUMN, entity.getOriginalId());
+        cv.put(IDEAL_POSITION, entity.getIdealPosition());
 
         return cv;
     }

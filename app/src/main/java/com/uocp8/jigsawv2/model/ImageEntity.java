@@ -10,6 +10,7 @@ public class ImageEntity {
     private String desc;
     private Long originalId;
     private Long id;
+    private Long idealPosition;
 
     public ImageEntity() {
 
@@ -22,11 +23,12 @@ public class ImageEntity {
      * @param name the name
      * @param desc the description
      */
-    public ImageEntity(Bitmap image, String name, String desc, Long originalId) {
+    public ImageEntity(Bitmap image, String name, String desc, Long originalId, Long idealPosition) {
         this.image = image;
         this.name = name;
         this.desc = desc;
         this.originalId = originalId;
+        this.idealPosition = idealPosition;
     }
 
     public Long getId() {
@@ -67,6 +69,14 @@ public class ImageEntity {
 
     public void setOriginalId(Long originalId) {
         this.originalId = originalId;
+    }
+
+    public Long getIdealPosition() {
+        return idealPosition;
+    }
+
+    public void setIdealPosition(Long idealPosition) {
+        this.idealPosition = idealPosition;
     }
 
     @Override

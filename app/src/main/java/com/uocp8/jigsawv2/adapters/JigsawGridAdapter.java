@@ -3,11 +3,15 @@ package com.uocp8.jigsawv2.adapters;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+
+import com.uocp8.jigsawv2.R;
+import com.uocp8.jigsawv2.model.ImageEntity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +22,7 @@ import java.util.Map;
 public class JigsawGridAdapter extends BaseAdapter implements OrderableAdapter{
 
     private Context context;
-    private List<Bitmap> items = new ArrayList<>();
+    private List<ImageEntity> items = new ArrayList<>();
 
     private static final int INVALID_ID = -1;
     private Long nextStableId = 0L;
@@ -27,13 +31,13 @@ public class JigsawGridAdapter extends BaseAdapter implements OrderableAdapter{
     private int columns;
 
 
-    public JigsawGridAdapter(Context context, List<Bitmap> items, int count) {
+    public JigsawGridAdapter(Context context, List<ImageEntity> items, int count) {
         this.context = context;
         this.columns = count;
         init(items);
     }
 
-    private void init(List<Bitmap> items) {
+    private void init(List<ImageEntity> items) {
         addAllStableId(items);
         this.items.addAll(items);
     }
@@ -76,7 +80,8 @@ public class JigsawGridAdapter extends BaseAdapter implements OrderableAdapter{
     }
 
     private ImageView newView(int position) {
-        Bitmap d = items.get(position);
+        ImageEntity ie = items.get(position);
+        Bitmap d = ie.getImage();
 
         ImageView view = new ImageView(context);
         view.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -85,7 +90,7 @@ public class JigsawGridAdapter extends BaseAdapter implements OrderableAdapter{
         view.setAdjustViewBounds(true);
         view.setPadding(1, 1, 1, 1);
         view.setImageDrawable(new BitmapDrawable(context.getResources(), d));
-
+        //view.setTag(R.id.IDEAL_POSITION, ie.getIdealPosition());
 
         return view;
     }
@@ -95,7 +100,7 @@ public class JigsawGridAdapter extends BaseAdapter implements OrderableAdapter{
         return true;
     }
 
-    void addAllStableId(List<Bitmap> items) {
+    void addAllStableId(List<ImageEntity> items) {
         items.forEach(this::addStableId);
     }
 

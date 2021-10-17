@@ -19,6 +19,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -26,12 +27,16 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.uocp8.jigsawv2.Game;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.adapters.OrderableAdapter;
+import com.uocp8.jigsawv2.model.ImageEntity;
 import com.uocp8.jigsawv2.util.GridUtil;
 
 import java.util.ArrayList;
@@ -389,8 +394,31 @@ public class GameViewModel extends GridView {
     public void stopEditMode() {
         mIsEditMode = false;
         requestDisallowInterceptTouchEvent(false);
+        checkCurrentPositions();
     }
+    public void checkCurrentPositions()
+    {
+        GridView grid = findViewById(R.id.jigsaw_grid);
+        int first = grid.getFirstVisiblePosition();
+        int last = grid.getLastVisiblePosition();
+        boolean isDone = true;
+        for(int i=first; i<=last; ++i){
 
+            //ImageView item = (ImageView) grid.getItemAtPosition(i); // You should probably cast to your adapter's item type
+            ImageEntity item = (ImageEntity) grid.getItemAtPosition(i);
+            //int idealPosition = (int) item.getTag(R.id.IDEAL_POSITION);
+            int idealPosition = Math.toIntExact(item.getIdealPosition());
+            Log.d("message","IdealPosition " + idealPosition + " Posicion: " + i);
+            if(i != idealPosition)
+            {
+                isDone = false;
+            }
+        }
+        if(isDone)
+        {
+            Toast.makeText(getContext(),"FINALIZADO", Toast.LENGTH_LONG).show();
+        }
+    }
     public boolean isEditMode() {
         return mIsEditMode;
     }

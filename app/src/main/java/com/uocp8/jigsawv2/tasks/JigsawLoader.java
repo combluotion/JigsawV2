@@ -14,7 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class JigsawLoader extends AsyncTask<Long, Integer, List<Bitmap>> {
+public class JigsawLoader extends AsyncTask<Long, Integer, List<ImageEntity>> {
     /** Image dao */
     private ImageDao dao;
 
@@ -31,15 +31,16 @@ public class JigsawLoader extends AsyncTask<Long, Integer, List<Bitmap>> {
     }
 
     @Override
-    protected List<Bitmap> doInBackground(Long... params) {
+    protected /*List<Bitmap>*/ List<ImageEntity> doInBackground(Long... params) {
         List<ImageEntity> entities = dao.findTiles(params[0]);
         Collections.shuffle(entities);
 
-        return entities.stream().map(ImageEntity::getImage).collect(Collectors.toList());
+        //return entities.stream().map(ImageEntity::getImage).collect(Collectors.toList());
+        return entities;
     }
 
     @Override
-    protected void onPostExecute(List<Bitmap> tiles) {
+    protected void onPostExecute(/*List<Bitmap>*/ List<ImageEntity> tiles) {
         int pieces = (int) Math.sqrt(tiles.size());
         JigsawGridAdapter adapter = new JigsawGridAdapter(context, tiles, pieces);
 

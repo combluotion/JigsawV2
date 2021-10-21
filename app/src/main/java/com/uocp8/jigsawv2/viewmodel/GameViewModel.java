@@ -10,13 +10,18 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.os.Handler;
+import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,6 +31,8 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Chronometer;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -34,9 +41,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.uocp8.jigsawv2.Game;
+import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.adapters.OrderableAdapter;
 import com.uocp8.jigsawv2.model.ImageEntity;
+import com.uocp8.jigsawv2.model.LongParcelable;
 import com.uocp8.jigsawv2.util.GridUtil;
 
 import java.util.ArrayList;
@@ -44,6 +53,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class GameViewModel extends GridView {
+
+    Handler handlerUI = new Handler();
 
     private BitmapDrawable mHoverCell;
     private Rect mHoverCellCurrentBounds;
@@ -391,12 +402,18 @@ public class GameViewModel extends GridView {
         return null;
     }
 
-    public void stopEditMode() {
+    public void stopEditMode(Chronometer chronometer) {
         mIsEditMode = false;
         requestDisallowInterceptTouchEvent(false);
-        checkCurrentPositions();
+        checkCurrentPositions(chronometer);
     }
-    public void checkCurrentPositions()
+
+    /**
+     * * Comprobación para cierre de llamadas
+     *   Se ejecuta cada vez que suelta una pieza para ver si sus posiciones son las correctas,
+     *   En caso de que todas tengan la posición correcta, indica el parámetro isDone y llama a la función de finalizado
+     */
+    public void checkCurrentPositions(Chronometer chronometer)
     {
         GridView grid = findViewById(R.id.jigsaw_grid);
         int first = grid.getFirstVisiblePosition();
@@ -416,9 +433,61 @@ public class GameViewModel extends GridView {
         }
         if(isDone)
         {
-            Toast.makeText(getContext(),"FINALIZADO", Toast.LENGTH_LONG).show();
+            String chronoTime = chronometer.getText().toString();
+            chronometer.stop();
+            Toast.makeText(getContext(),"¡Felicidades! Has ganado.", Toast.LENGTH_LONG).show();
+
+            handlerUI.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    endGame(chronoTime);
+                }
+            }, 500);
+
+
+
         }
     }
+    public void endGame(String chronoTime)
+    {
+        //Ask for Name
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(chronoTime +"! Inserta tu nombre:");
+
+        //Indicamos el input
+        final EditText input = new EditText(getContext());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+        //Añadimos botones
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getContext(), input.getText().toString(), Toast.LENGTH_LONG).show();
+                //Create Score
+                //Return to Home menu
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("No quiero", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                //Return to Home menu
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                getContext().startActivity(intent);
+            }
+        });
+
+        builder.show();
+
+    }
+
+    /**
+     * END Finalización
+     */
     public boolean isEditMode() {
         return mIsEditMode;
     }

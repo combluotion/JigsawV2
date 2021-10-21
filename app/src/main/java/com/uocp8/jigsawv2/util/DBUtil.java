@@ -1,5 +1,8 @@
 package com.uocp8.jigsawv2.util;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 public final class DBUtil {
     public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "jigsaw.db";
@@ -10,7 +13,16 @@ public final class DBUtil {
     public static final String DESC_COLUMN = "desc";
     public static final String ORIGINAL_COLUMN = "original";
     public static final String IDEAL_POSITION = "idealposition";
+
+
+    // Atributos para tabla Score
+
     public static final String SCORE_TABLE = "jigsaw_score";
+    public static final String ID_USER_SCORE ="iduser";
+    public static final String USERNAME_SCORE="username";
+    public static final String DATE_SCORE = "datascore";
+    public static final String TIME_SCORE ="timescore";
+
 
     private DBUtil() {}
 
@@ -45,11 +57,11 @@ public final class DBUtil {
         return new String[]{String.valueOf(id)};
     }
 
-    /** Create Score Table
+    //Create Score Table
     public static final String CREATE_SCORE_TABLE = "create table if not"
             + " exists " + SCORE_TABLE + " ("
-            + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + NAME_COLUMN + " TEXT,"
-            + IMAGE_COLUMN + " TEXT," + DESC_COLUMN + " TEXT,"
-            + ORIGINAL_COLUMN + " INTEGER);"; //TODO campos*/
+            + ID_USER_SCORE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + USERNAME_SCORE + " TEXT,"
+            + DATE_SCORE + " DATE,"  //verificar
+            + TIME_SCORE + " TIMESTAMP);"; //verificar
 }

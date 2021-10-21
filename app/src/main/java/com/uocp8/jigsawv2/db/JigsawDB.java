@@ -28,6 +28,8 @@ public class JigsawDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, "creating table jigsaw_images if it doesn't exist");
         db.execSQL(DBUtil.CREATE_JIGSAW_TABLE);
+        // create table score
+        db.execSQL(DBUtil.CREATE_SCORE_TABLE);
     }
 
     @Override

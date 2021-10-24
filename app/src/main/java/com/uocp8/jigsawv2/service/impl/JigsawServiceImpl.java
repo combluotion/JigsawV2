@@ -31,6 +31,7 @@ public class JigsawServiceImpl  implements JigsawService {
 
     @Override
     public Long create(Bitmap original, Difficulty level) {
+        dao.cleanJigsawTable();
         return createImageTiles(original, level.getValue());
     }
 

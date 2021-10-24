@@ -1,7 +1,7 @@
 package com.uocp8.jigsawv2.model;
 
 import java.sql.Time;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
@@ -9,10 +9,10 @@ public class Score {
 
     private int Iduser;
     private String name;
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private double time;
 
-    public Score(int iduser, String name, LocalDate date, LocalTime time) {
+    public Score(int iduser, String name, String date, double time) {
         Iduser = iduser;
         this.name = name;
         this.date = date;
@@ -21,7 +21,7 @@ public class Score {
 
     //Sobrecarga de constructores para insert
 
-    public Score(String name, LocalDate date, LocalTime time) {
+    public Score(String name, String date, double time) {
         this.name = name;
         this.date = date;
         this.time = time;
@@ -46,19 +46,19 @@ public class Score {
         this.name = name;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public double getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(double time) {
         this.time = time;
     }
 
@@ -70,7 +70,7 @@ public class Score {
         return "Score{" +
                 "Iduser=" + Iduser +
                 ", name='" + name + '\'' +
-                ", date=" + date +
+                ", date=" + date.toString() +
                 ", time=" + time +
                 '}';
     }

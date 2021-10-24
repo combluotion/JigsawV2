@@ -8,5 +8,5 @@ import java.util.List;
 public interface ScoreDao {
 
     Long create(Score entity);
-    List<Score> findTiles(Long id);
+    List<Score> retrieveScores();
 }

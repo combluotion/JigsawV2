@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public final class DBUtil {
-    public static final int DATABASE_VERSION = 4;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "jigsaw.db";
     public static final String JIGSAW_TABLE = "jigsaw_images";
     public static final String NAME_COLUMN = "name";
@@ -62,6 +62,10 @@ public final class DBUtil {
             + " exists " + SCORE_TABLE + " ("
             + ID_USER_SCORE + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + USERNAME_SCORE + " TEXT,"
-            + DATE_SCORE + " DATE,"  //verificar
-            + TIME_SCORE + " TIMESTAMP);"; //verificar
+            + DATE_SCORE + " TEXT,"  //verificar
+            + TIME_SCORE + " REAL);"; //verificar
+
+    /** all columns selection */
+    public final static String[] ALL_SCORE_COLUMNS = new String[]{ID_USER_SCORE, USERNAME_SCORE,
+            DATE_SCORE, TIME_SCORE};
 }

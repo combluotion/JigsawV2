@@ -117,8 +117,8 @@ public class DashboardFragment extends Fragment {
         picture.add(new PictureModel("Imagen 2", R.drawable.image2));
         picture.add(new PictureModel("Imagen 3", R.drawable.image3));
         picture.add(new PictureModel("Imagen 4", R.drawable.image4));
-        //picture.add(new PictureModel("Imagen 5", R.drawable.image5));
-        //picture.add(new PictureModel("Imagen 6", R.drawable.image6));
+        picture.add(new PictureModel("Imagen 5", R.drawable.image5));
+        picture.add(new PictureModel("Imagen 6", R.drawable.image6));
         return picture;
 
     }

@@ -481,13 +481,13 @@ public class GameViewModel extends GridView {
                 String currentDateandTime = sdf.format(new Date());
                 ScoreDao scoreDao = new ScoreDaoImpl(getContext());
                 Score score = new Score(nombre,currentDateandTime,seconds);
-                if (nombre.isEmpty()){                                                          // se puede hacer mas elegante
-                    Score sscore = new Score(nombre,currentDateandTime,seconds);
-                    sscore.setName("No name");
-                    scoreDao.create(sscore);
-                }else{
-                    scoreDao.create(score);
+                if (nombre.isEmpty()){
+
+                    score.setName("No name");
+
                 }
+                    scoreDao.create(score);
+
 
                 //Return to Home menu
                 Intent intent = new Intent(getContext(), MainActivity.class);

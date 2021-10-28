@@ -56,7 +56,7 @@ public class HomeFragment extends Fragment {
         final TextView scoreTitle = binding.ScoreTitle;
         homeViewModel.getScoreTitle().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
-            public void onChanged(String s) {
+            public void onChanged(String s) {  eliminar
                 scoreTitle.setText(s);
             }
         });

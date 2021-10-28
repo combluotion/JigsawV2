@@ -29,7 +29,7 @@ public class HomeViewModel extends AndroidViewModel {
     public HomeViewModel(@NonNull Application application) {
         super(application);
         mText = new MutableLiveData<>();
-        mText.setValue("This is home fragment");
+        mText.setValue("This is home fragment"); //eliminar
         tScoreTitle = new MutableLiveData<>();
         tScoreTitle.setValue("::SCORE::");
         mListView = new MutableLiveData<>();

@@ -30,9 +30,7 @@
         android:textAlignment="gravity"
         android:divider="@color/purple_700"
         android:dividerHeight="1dp"
-        android:contextClickable="false"
-        android:clickable="false"
-        android:longClickable="false"
+
 
         app:layout_constraintBottom_toTopOf="@+id/text_home"
         app:layout_constraintEnd_toEndOf="parent"

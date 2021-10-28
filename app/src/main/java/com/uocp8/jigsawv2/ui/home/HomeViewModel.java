@@ -24,18 +24,26 @@ public class HomeViewModel extends AndroidViewModel {
 
     private MutableLiveData<String> mText;
     private MutableLiveData<ArrayList<String>> mListView;
+    private MutableLiveData<String> tScoreTitle;
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
-
+        tScoreTitle = new MutableLiveData<>();
+        tScoreTitle.setValue("::SCORE::");
         mListView = new MutableLiveData<>();
 
     }
 
+
+
     public LiveData<String> getText() {
         return mText;
+    }
+
+    public  LiveData<String> getScoreTitle(){
+        return tScoreTitle;
     }
 
     public LiveData<ArrayList<String>> loadScore() {

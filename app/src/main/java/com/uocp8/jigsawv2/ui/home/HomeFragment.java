@@ -49,6 +49,19 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        /**
+         *
+         * titulo score
+         *
+        final TextView scoreTitle = binding.ScoreTitle;
+        homeViewModel.getScoreTitle().observe(getViewLifecycleOwner(), new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                scoreTitle.setText(s);
+            }
+        });
+            */
+
         final ListView listView = binding.scoreList;
         homeViewModel.loadScore().observe(getViewLifecycleOwner(), new Observer<ArrayList<String>>() {
             @Override

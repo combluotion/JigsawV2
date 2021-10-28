@@ -462,7 +462,7 @@ public class GameViewModel extends GridView {
     {
         //Ask for Name
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(chronoTime +"! Inserta tu nombre:");
+        builder.setTitle(chronoTime +" ! Inserta tu nombre:");
 
         //Indicamos el input
         final EditText input = new EditText(getContext());
@@ -476,11 +476,19 @@ public class GameViewModel extends GridView {
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getContext(), input.getText().toString(), Toast.LENGTH_LONG).show();
                 //Create Score
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+                String nombre = input.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); //yyyyMMdd_HHmmss
                 String currentDateandTime = sdf.format(new Date());
                 ScoreDao scoreDao = new ScoreDaoImpl(getContext());
-                Score score = new Score(input.getText().toString(),currentDateandTime,seconds);
-                scoreDao.create(score);
+                Score score = new Score(nombre,currentDateandTime,seconds);
+                if (nombre.isEmpty()){                                                          // se puede hacer mas elegante
+                    Score sscore = new Score(nombre,currentDateandTime,seconds);
+                    sscore.setName("No name");
+                    scoreDao.create(sscore);
+                }else{
+                    scoreDao.create(score);
+                }
+
                 //Return to Home menu
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 getContext().startActivity(intent);

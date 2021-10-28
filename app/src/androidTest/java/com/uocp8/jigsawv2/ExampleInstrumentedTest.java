@@ -26,11 +26,6 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.uocp8.jigsawv2", appContext.getPackageName());
 
-        String nombre="pepa";
-        String fecha="2020-02-02";
-        String time="20";
 
-        ScoreDaoImpl insert = new ScoreDaoImpl(nombre,fecha,time);
-        insert.create()
     }
 }

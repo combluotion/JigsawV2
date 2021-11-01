@@ -2,14 +2,11 @@ package com.uocp8.jigsawv2;
 
 
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -61,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.Ayuda) {
             //Return to Home menu
-            Intent intent = new Intent(this.getApplicationContext(), MainActivity2.class);
+            Intent intent = new Intent(this.getApplicationContext(), Ayuda.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.getApplicationContext().startActivity(intent);
         }

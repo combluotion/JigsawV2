@@ -13,7 +13,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.JigsawV2">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Ayuda"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

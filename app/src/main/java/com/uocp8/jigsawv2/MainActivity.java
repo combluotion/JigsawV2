@@ -61,7 +61,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.Ayuda) {
             //Return to Home menu
-            Intent intent = new Intent(this.getApplicationContext(), MainActivity.class);
+            Intent intent = new Intent(this.getApplicationContext(), MainActivity2.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.getApplicationContext().startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

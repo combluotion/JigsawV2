@@ -88,6 +88,12 @@ public class ImageDaoImpl implements ImageDao {
         return db.delete(JIGSAW_TABLE, ID_SELECTION, getIdArguments(id));
     }
 
+    @Override
+    public void cleanJigsawTable()
+    {
+        db.delete(JIGSAW_TABLE,"",null);
+    }
+
     private List<ImageEntity> getAllFromCursor(Cursor cursor) {
         List<ImageEntity> entities = new ArrayList<>();
         if (cursor != null) {

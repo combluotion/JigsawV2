@@ -112,7 +112,7 @@ public class Game extends AppCompatActivity {
             final GameViewModel gridView) {
         return () -> {
             Log.d(TAG, "dropped element");
-            gridView.stopEditMode();
+            gridView.stopEditMode(chronometer);
         };
     }
 

@@ -45,4 +45,6 @@ public interface ImageDao {
      */
     int delete(Long id);
 
+    void cleanJigsawTable();
+
 }

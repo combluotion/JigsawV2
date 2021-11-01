@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 
+import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.model.JigsawState;
 import com.uocp8.jigsawv2.model.LongParcelable;
 import com.uocp8.jigsawv2.tasks.JigsawLoader;
@@ -32,6 +33,10 @@ public class Game extends AppCompatActivity {
 
     /** Need to keep track of time to reset the chronometer */
     private long elapsedTime = 0L;
+
+    /**Current level being played */
+    private Difficulty level;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +78,10 @@ public class Game extends AppCompatActivity {
             if(parcelable != null) {
                 task.execute(parcelable.getData());
             }
+            level =(Difficulty) bundle.get("level");
         }
+
+        gridView.setDifficultyLevel(level);
 
         gridView.setOnItemLongClickListener(onItemLongClickListener(gridView));
         gridView.setOnDropListener(onDropListener(gridView));

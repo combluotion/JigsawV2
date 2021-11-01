@@ -47,6 +47,7 @@ import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.adapters.OrderableAdapter;
 import com.uocp8.jigsawv2.dao.ScoreDao;
 import com.uocp8.jigsawv2.dao.impl.ScoreDaoImpl;
+import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.model.ImageEntity;
 import com.uocp8.jigsawv2.model.LongParcelable;
 import com.uocp8.jigsawv2.model.Score;
@@ -98,6 +99,8 @@ public class GameViewModel extends GridView {
     private OnScrollListener mUserScrollListener;
     private OnDropListener mDropListener;
     private OnDragListener mDragListener;
+
+    private Difficulty level;
 
     private OnItemClickListener mUserItemClickListener;
     private OnItemClickListener mLocalItemClickListener = new
@@ -216,6 +219,11 @@ public class GameViewModel extends GridView {
     @Override
     public void setOnScrollListener(OnScrollListener scrollListener) {
         this.mUserScrollListener = scrollListener;
+    }
+
+    public void setDifficultyLevel(Difficulty level)
+    {
+        this.level = level;
     }
 
     @Override
@@ -460,6 +468,9 @@ public class GameViewModel extends GridView {
     }
     public void endGame(String chronoTime, long seconds)
     {
+        //Score Time:
+        long finalScore = (long) (level.getScoreInitial() - seconds) * (level.getValue() / 2);
+
         //Ask for Name
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(chronoTime +" ! Inserta tu nombre:");
@@ -480,7 +491,7 @@ public class GameViewModel extends GridView {
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); //yyyyMMdd_HHmmss
                 String currentDateandTime = sdf.format(new Date());
                 ScoreDao scoreDao = new ScoreDaoImpl(getContext());
-                Score score = new Score(nombre,currentDateandTime,seconds);
+                Score score = new Score(nombre,currentDateandTime,finalScore);
                 if (nombre.isEmpty()){
 
                     score.setName("No name");

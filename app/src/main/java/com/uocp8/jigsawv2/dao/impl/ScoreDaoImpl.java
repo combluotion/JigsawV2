@@ -57,7 +57,7 @@ public class ScoreDaoImpl implements ScoreDao {
     @Override
     public List<Score> retrieveScores() {
         List<Score> scores = new ArrayList<>();
-        Cursor cursor = db.query(SCORE_TABLE, ALL_SCORE_COLUMNS, null, null, null, null,TIME_SCORE + " ASC","10");
+        Cursor cursor = db.query(SCORE_TABLE, ALL_SCORE_COLUMNS, null, null, null, null,TIME_SCORE + " DESC","10");
         scores.addAll(getAllFromCursor(cursor));
         cleanUp(cursor);
 

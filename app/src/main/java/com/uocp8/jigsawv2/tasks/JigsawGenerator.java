@@ -41,6 +41,7 @@ public class JigsawGenerator extends AsyncTask<Bitmap, Integer, Long> {
     private void startJigsaw(long id) {
         Intent intent = new Intent(context, Game.class).putExtra(
                 Game.ORIGINAL_IMG_ID, new LongParcelable(id));
+        intent.putExtra("level",this.level);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }

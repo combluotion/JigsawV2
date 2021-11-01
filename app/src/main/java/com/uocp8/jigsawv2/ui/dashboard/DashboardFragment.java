@@ -1,5 +1,6 @@
 package com.uocp8.jigsawv2.ui.dashboard;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -8,25 +9,40 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.uocp8.jigsawv2.PictureModel;
 import com.uocp8.jigsawv2.R;
+import com.uocp8.jigsawv2.RecyclerViewAdaptador;
+import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
 import com.uocp8.jigsawv2.databinding.FragmentDashboardBinding;
 import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.tasks.JigsawGenerator;
 import com.uocp8.jigsawv2.util.GridUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DashboardFragment extends Fragment {
 
     private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding binding;
-    private Button button;
+
+
+
+    private RecyclerView recyclerViewPicture;
+    private RecyclerViewAdaptador adaptadorPicture;
+
+    
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,23 +59,29 @@ public class DashboardFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
         return root;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        button =  getView().findViewById(R.id.button);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        recyclerViewPicture = (RecyclerView) getView().findViewById(R.id.recyclerPicture);
+        recyclerViewPicture.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        adaptadorPicture = new RecyclerViewAdaptador(obtenerPictures(), new RecyclerViewAdaptador.ItemClickListener() {
             @Override
-            public void onClick(View view) {
-                //Intent intent = new Intent(getContext(), Game.class);
+            public void onItemClick(PictureModel picture) {
+                showToast(picture.getPicture() + "Clicked!");
                 openCreateJigsawDialog();
-                //intent.putExtra("image",getResources().getIdentifier("image1","drawable", getContext().getPackageName()));
-                //startActivity(intent);
             }
         });
+        recyclerViewPicture.setAdapter(adaptadorPicture);
     }
 
+   private void showToast(String message){
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
     private void openCreateJigsawDialog() {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.level_difficulty)
@@ -73,18 +95,33 @@ public class DashboardFragment extends Fragment {
                 .show();
     }
 
-    private void createJigsaw(int which)
-    {
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.image2);
+    private void createJigsaw(int which) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.image2);
         //bitmap = GridUtil.getResizedBitmap(bitmap, 1480, 1300, false);
         JigsawGenerator task = new JigsawGenerator(getContext(), Difficulty.fromValue(which));
 
 
         task.execute(bitmap.copy(bitmap.getConfig(), true));
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
+
+
+    public List<PictureModel> obtenerPictures() {
+        List<PictureModel> picture = new ArrayList<>();
+        picture.add(new PictureModel("Imagen 1", R.drawable.image1));
+        picture.add(new PictureModel("Imagen 2", R.drawable.image2));
+        picture.add(new PictureModel("Imagen 3", R.drawable.image3));
+        picture.add(new PictureModel("Imagen 4", R.drawable.image4));
+        picture.add(new PictureModel("Imagen 5", R.drawable.image5));
+        picture.add(new PictureModel("Imagen 6", R.drawable.image6));
+        return picture;
+
+    }
+
+
 }

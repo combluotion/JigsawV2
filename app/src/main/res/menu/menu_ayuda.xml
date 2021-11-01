@@ -5,7 +5,6 @@
     <item android:id="@+id/Ayuda"
         android:icon="@drawable/ic_ayuda"
         android:title="Ayuda"
-        app:showAsAction="ifRoom"/>
-
+        app:showAsAction="always"/>
 
 </menu>

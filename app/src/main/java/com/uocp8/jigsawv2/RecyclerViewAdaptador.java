@@ -1,15 +1,14 @@
 package com.uocp8.jigsawv2;
 
-import android.graphics.Picture;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.uocp8.jigsawv2.model.PictureModel;
 
 import java.util.List;
 

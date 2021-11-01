@@ -1,4 +1,4 @@
-package com.uocp8.jigsawv2;
+package com.uocp8.jigsawv2.model;
 
 public class PictureModel {
     private String picture;

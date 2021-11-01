@@ -1,13 +1,11 @@
 package com.uocp8.jigsawv2.ui.dashboard;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,14 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.uocp8.jigsawv2.PictureModel;
+import com.uocp8.jigsawv2.model.PictureModel;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.RecyclerViewAdaptador;
-import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
 import com.uocp8.jigsawv2.databinding.FragmentDashboardBinding;
 import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.tasks.JigsawGenerator;
-import com.uocp8.jigsawv2.util.GridUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +69,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onItemClick(PictureModel picture) {
                 showToast(picture.getPicture() + "Clicked!");
-                openCreateJigsawDialog();
+                openCreateJigsawDialog(picture.getImgPicture());
             }
         });
         recyclerViewPicture.setAdapter(adaptadorPicture);
@@ -82,12 +78,12 @@ public class DashboardFragment extends Fragment {
    private void showToast(String message){
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
-    private void openCreateJigsawDialog() {
+    private void openCreateJigsawDialog(int picture) {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.level_difficulty)
                 .items("Easy", "Medium", "Hard")
                 .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
-                    createJigsaw(which);
+                    createJigsaw(which, picture);
                     return true;
                 })
                 .positiveText(R.string.action_ok)
@@ -95,8 +91,8 @@ public class DashboardFragment extends Fragment {
                 .show();
     }
 
-    private void createJigsaw(int which) {
-        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), R.drawable.image2);
+    private void createJigsaw(int which, int picture) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), picture);
         //bitmap = GridUtil.getResizedBitmap(bitmap, 1480, 1300, false);
         JigsawGenerator task = new JigsawGenerator(getContext(), Difficulty.fromValue(which));
 

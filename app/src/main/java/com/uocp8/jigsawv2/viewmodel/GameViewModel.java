@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -44,13 +45,20 @@ import com.uocp8.jigsawv2.Game;
 import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.adapters.OrderableAdapter;
+import com.uocp8.jigsawv2.dao.ScoreDao;
+import com.uocp8.jigsawv2.dao.impl.ScoreDaoImpl;
 import com.uocp8.jigsawv2.model.ImageEntity;
 import com.uocp8.jigsawv2.model.LongParcelable;
+import com.uocp8.jigsawv2.model.Score;
 import com.uocp8.jigsawv2.util.GridUtil;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class GameViewModel extends GridView {
 
@@ -434,13 +442,15 @@ public class GameViewModel extends GridView {
         if(isDone)
         {
             String chronoTime = chronometer.getText().toString();
+            long seconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+
             chronometer.stop();
             Toast.makeText(getContext(),"¡Felicidades! Has ganado.", Toast.LENGTH_LONG).show();
 
             handlerUI.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    endGame(chronoTime);
+                    endGame(chronoTime,seconds );
                 }
             }, 500);
 
@@ -448,16 +458,16 @@ public class GameViewModel extends GridView {
 
         }
     }
-    public void endGame(String chronoTime)
+    public void endGame(String chronoTime, long seconds)
     {
         //Ask for Name
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(chronoTime +"! Inserta tu nombre:");
+        builder.setTitle(chronoTime +" ! Inserta tu nombre:");
 
         //Indicamos el input
         final EditText input = new EditText(getContext());
         // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
         //Añadimos botones
@@ -466,6 +476,19 @@ public class GameViewModel extends GridView {
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getContext(), input.getText().toString(), Toast.LENGTH_LONG).show();
                 //Create Score
+                String nombre = input.getText().toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()); //yyyyMMdd_HHmmss
+                String currentDateandTime = sdf.format(new Date());
+                ScoreDao scoreDao = new ScoreDaoImpl(getContext());
+                Score score = new Score(nombre,currentDateandTime,seconds);
+                if (nombre.isEmpty()){
+
+                    score.setName("No name");
+
+                }
+                    scoreDao.create(score);
+
+
                 //Return to Home menu
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 getContext().startActivity(intent);

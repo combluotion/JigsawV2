@@ -109,12 +109,12 @@ public class DashboardFragment extends Fragment {
 
     public List<PictureModel> obtenerPictures() {
         List<PictureModel> picture = new ArrayList<>();
-        picture.add(new PictureModel("Imagen 1", R.drawable.image1));
-        picture.add(new PictureModel("Imagen 2", R.drawable.image2));
-        picture.add(new PictureModel("Imagen 3", R.drawable.image3));
-        picture.add(new PictureModel("Imagen 4", R.drawable.image4));
-        picture.add(new PictureModel("Imagen 5", R.drawable.image5));
-        picture.add(new PictureModel("Imagen 6", R.drawable.image6));
+        picture.add(new PictureModel("Michael Cera", R.drawable.image1));
+        picture.add(new PictureModel("Steve Buscemi", R.drawable.image2));
+        //picture.add(new PictureModel("Imagen 3", R.drawable.image3));
+        picture.add(new PictureModel("Marion Cotillard", R.drawable.image4));
+        picture.add(new PictureModel("Niña 1", R.drawable.image5));
+        picture.add(new PictureModel("Hombre 1", R.drawable.image6));
         return picture;
 
     }

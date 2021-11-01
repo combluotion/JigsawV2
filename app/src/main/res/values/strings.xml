@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">JigsawV2</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
+    <string name="title_dashboard">Elige tu imagen</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_new_drawing">New Drawing</string>
     <string name="action_ok">OK</string>

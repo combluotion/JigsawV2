@@ -36,10 +36,12 @@
                 <TextView
                     android:id="@+id/textPicture"
                     android:layout_width="match_parent"
-                    android:layout_height="125dp"
+                    android:layout_height="match_parent"
                     android:clickable="false"
                     android:text="TextView"
-                    android:textSize="48sp" />
+                    android:textSize="30sp"
+                    android:textAlignment="center"
+                    android:layout_marginTop="35dp"/>
 
             </LinearLayout>
         </LinearLayout>

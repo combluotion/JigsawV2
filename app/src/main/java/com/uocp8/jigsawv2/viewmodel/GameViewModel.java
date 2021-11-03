@@ -11,6 +11,7 @@ import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.CalendarContract;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -56,6 +58,7 @@ import com.uocp8.jigsawv2.util.GridUtil;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -498,6 +501,15 @@ public class GameViewModel extends GridView {
 
                 }
                     scoreDao.create(score);
+
+                //insertar un evento en le calendario
+
+                Intent calendar = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.Events.TITLE,"SCORE")
+                        .putExtra(CalendarContract.Events.DESCRIPTION, finalScore);
+
+                        getContext().startActivity(calendar);
 
 
                 //Return to Home menu

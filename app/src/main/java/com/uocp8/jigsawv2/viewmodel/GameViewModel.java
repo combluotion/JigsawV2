@@ -4,6 +4,7 @@ import static com.uocp8.jigsawv2.util.Constants.INVALID_ID;
 import static com.uocp8.jigsawv2.util.Constants.MOVE_DURATION;
 import static com.uocp8.jigsawv2.util.Constants.SMOOTH_SCROLL_AMOUNT_AT_EDGE;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -12,6 +13,7 @@ import android.animation.TypeEvaluator;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -37,13 +40,11 @@ import android.widget.AdapterView;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import com.uocp8.jigsawv2.Game;
 import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.adapters.OrderableAdapter;
@@ -51,12 +52,12 @@ import com.uocp8.jigsawv2.dao.ScoreDao;
 import com.uocp8.jigsawv2.dao.impl.ScoreDaoImpl;
 import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.model.ImageEntity;
-import com.uocp8.jigsawv2.model.LongParcelable;
+import com.uocp8.jigsawv2.model.MyCalendar;
 import com.uocp8.jigsawv2.model.Score;
 import com.uocp8.jigsawv2.util.GridUtil;
+import com.uocp8.jigsawv2.util.PermissionsUtil;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -504,14 +505,28 @@ public class GameViewModel extends GridView {
 
                 //insertar un evento en le calendario
 
-                Intent calendar = new Intent(Intent.ACTION_INSERT)
+               Intent calendar = new Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
                         .putExtra(CalendarContract.Events.TITLE,"SCORE")
-                        .putExtra(CalendarContract.Events.DESCRIPTION, finalScore);
+                        .putExtra(CalendarContract.Events.DESCRIPTION, Long.toString(finalScore));
 
                         getContext().startActivity(calendar);
 
+              /*  MyCalendar[] calendarios = PermissionsUtil.getCalendar(getContext());
 
+                PermissionsUtil.checkPermission(42,getContext(), Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
+
+                ContentResolver cr = getContext().getContentResolver();
+                ContentValues cv = new ContentValues();
+                cv.put(CalendarContract.Events.TITLE, "Partida Jigsaw");
+                cv.put(CalendarContract.Events.DESCRIPTION, "Has ganado " + finalScore + " puntos.");
+                cv.put(CalendarContract.Events.EVENT_LOCATION, "Jigsaw");
+                cv.put(CalendarContract.Events.DTSTART, Calendar.getInstance().getTimeInMillis());
+                cv.put(CalendarContract.Events.DTEND, Calendar.getInstance().getTimeInMillis() + 60000);
+                cv.put(CalendarContract.Events.CALENDAR_ID, calendarios[2].getCalId());
+                cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
+                Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
+                Toast.makeText(getContext(), "Añadido evento en calendario", Toast.LENGTH_LONG).show();*/
                 //Return to Home menu
                 Intent intent = new Intent(getContext(), MainActivity.class);
                 getContext().startActivity(intent);

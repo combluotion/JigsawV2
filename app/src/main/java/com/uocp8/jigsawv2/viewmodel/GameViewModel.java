@@ -504,6 +504,8 @@ public class GameViewModel extends GridView {
                     scoreDao.create(score);
 
                 //insertar un evento en le calendario
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                getContext().startActivity(intent);
 
                Intent calendar = new Intent(Intent.ACTION_INSERT)
                         .setData(CalendarContract.Events.CONTENT_URI)
@@ -527,9 +529,7 @@ public class GameViewModel extends GridView {
                 cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
                 Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
                 Toast.makeText(getContext(), "Añadido evento en calendario", Toast.LENGTH_LONG).show();*/
-                //Return to Home menu
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                getContext().startActivity(intent);
+
             }
         });
         builder.setNegativeButton("No quiero", new DialogInterface.OnClickListener() {

@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -105,7 +106,8 @@ public class GameViewModel extends GridView {
     private OnDragListener mDragListener;
 
     private Difficulty level;
-
+    private MediaPlayer movePiece;
+    private MediaPlayer dropPiece;
     private OnItemClickListener mUserItemClickListener;
     private OnItemClickListener mLocalItemClickListener = new
             OnItemClickListener() {
@@ -204,6 +206,10 @@ public class GameViewModel extends GridView {
                 * metrics.density + 0.5f);
         mOverlapIfSwitchStraightLine = getResources().getDimensionPixelSize(
                 R.dimen.dgv_overlap_if_switch_straight_line);
+
+        movePiece = MediaPlayer.create(getContext(),R.raw.getpiece);
+        dropPiece = MediaPlayer.create(getContext(),R.raw.droppiece);
+
     }
 
     public GameViewModel(Context context, AttributeSet attrs) {
@@ -324,6 +330,7 @@ public class GameViewModel extends GridView {
     }
 
     public void startEditMode(int position) {
+        movePiece.start();
         requestDisallowInterceptTouchEvent(true);
         if (isPostHoneycomb() && position != -1) {
             startDragAtPosition(position);
@@ -423,6 +430,7 @@ public class GameViewModel extends GridView {
     }
 
     public void stopEditMode(Chronometer chronometer) {
+        dropPiece.start();
         mIsEditMode = false;
         requestDisallowInterceptTouchEvent(false);
         checkCurrentPositions(chronometer);

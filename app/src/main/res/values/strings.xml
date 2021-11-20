@@ -31,4 +31,6 @@
     <string name="title_jigsaw_detail">Jigsaw Detail</string>
     <string name="title_jigsaw_history">History</string>
     <string name="title_activity_jigsaw">Draw</string>
+
+    <string name="MediaPlayer">Audio con Media Player</string>
 </resources>

@@ -42,6 +42,8 @@ import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.tasks.JigsawGenerator;
 import com.uocp8.jigsawv2.util.PermissionsUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -99,6 +101,12 @@ public class DashboardFragment extends Fragment {
         recyclerViewPicture.setAdapter(adaptadorPicture);
 
         openCamera = getView().findViewById(R.id.openCamera);
+        ActivityResultLauncher<String> requestCameraPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        takePictureAndCreateJigsaw();
+                    }
+                });
         mGetPhoto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>(){
             @Override
             public void onActivityResult(ActivityResult data) {
@@ -113,10 +121,18 @@ public class DashboardFragment extends Fragment {
 
         openCamera.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
-                        mGetPhoto.launch(takePictureIntent);
-                    }
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.CAMERA ) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // You can use the API that requires the permission.
+                    takePictureAndCreateJigsaw();
+                }  else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestCameraPermissionLauncher.launch(
+                            Manifest.permission.CAMERA );
+                }
+
                 }
             });
 
@@ -212,6 +228,13 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    private void takePictureAndCreateJigsaw()
+    {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            mGetPhoto.launch(takePictureIntent);
+        }
+    }
 private void obtainGalleryImageAndCreateJigsaw()
 {
     String[] projection = new String[]{
@@ -244,7 +267,17 @@ private void obtainGalleryImageAndCreateJigsaw()
     if (currentBitmap != null)
         currentBitmap.recycle();
     currentBitmap = BitmapFactory.decodeFile(path);
-    createJigsawFromBitmap(currentBitmap);
+    handler.post(new Runnable(){
+        @Override
+        public void run() {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            currentBitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+            ByteArrayInputStream isBm = new ByteArrayInputStream(
+                    baos.toByteArray());
+            currentBitmap = BitmapFactory.decodeStream(isBm,null,null);
+            createJigsawFromBitmap(currentBitmap);
+        }
+    });
 
 
 }

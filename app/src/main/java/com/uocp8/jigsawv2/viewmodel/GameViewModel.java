@@ -18,6 +18,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -47,6 +48,7 @@ import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.R;
@@ -513,33 +515,40 @@ public class GameViewModel extends GridView {
                 }
                     scoreDao.create(score);
 
-                /*insertar un evento en le calendario
-                Intent intent = new Intent(getContext(), MainActivity.class);
-                getContext().startActivity(intent);
-
-               Intent calendar = new Intent(Intent.ACTION_INSERT)
-                        .setData(CalendarContract.Events.CONTENT_URI)
-                        .putExtra(CalendarContract.Events.TITLE,"SCORE")
-                        .putExtra(CalendarContract.Events.DESCRIPTION, Long.toString(finalScore));
-
-                        getContext().startActivity(calendar);
-*/
                 if (recuperacionPuntuacionCalendario(finalScore)) {
-                    MyCalendar[] calendarios = PermissionsUtil.getCalendar(getContext());
+                   /* MyCalendar[] calendarios = PermissionsUtil.getCalendar(getContext());
 
                     PermissionsUtil.checkPermission(42, getContext(), Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
 
                     ContentResolver cr = getContext().getContentResolver();
                     ContentValues cv = new ContentValues();
                     cv.put(CalendarContract.Events.TITLE, "Partida Jigsaw");
-                    cv.put(CalendarContract.Events.DESCRIPTION, "Has ganado " + finalScore + " puntos.");
+                    cv.put(CalendarContract.Events.DESCRIPTION, String.valueOf(finalScore));
                     cv.put(CalendarContract.Events.EVENT_LOCATION, "Jigsaw");
                     cv.put(CalendarContract.Events.DTSTART, Calendar.getInstance().getTimeInMillis());
                     cv.put(CalendarContract.Events.DTEND, Calendar.getInstance().getTimeInMillis() + 60000);
                     cv.put(CalendarContract.Events.CALENDAR_ID, calendarios[2].getCalId());
                     cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
                     Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
-                    Toast.makeText(getContext(), "Añadido evento en calendario", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), " ¡Nuevo Record! Añadido evento en calendario", Toast.LENGTH_LONG).show();*/
+
+                    /*insertar un evento en le calendario*/
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    getContext().startActivity(intent);
+
+                   Intent calendar = new Intent(Intent.ACTION_INSERT)
+                            .setData(CalendarContract.Events.CONTENT_URI)
+                            .putExtra(CalendarContract.Events.TITLE,"Record Partida Jigsaw")
+                            .putExtra(CalendarContract.Events.DESCRIPTION, Long.toString(finalScore));
+
+                            getContext().startActivity(calendar);
+
+
+                }
+                else
+                {
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    getContext().startActivity(intent);
                 }
                 //Log.d("GetDescription","Result: " + cv.get(CalendarContract.Events.DESCRIPTION));
 
@@ -564,44 +573,38 @@ public class GameViewModel extends GridView {
      */
     public boolean recuperacionPuntuacionCalendario(long finalScore ){
 
+        PermissionsUtil.checkPermission(42,getContext(),Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR);
         ContentResolver contentResolver = getContext().getContentResolver();
         Uri.Builder builder = CalendarContract.Instances.CONTENT_URI.buildUpon();
 
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(2000,Calendar.JANUARY,1,0,0);
+        beginTime.set(2021,Calendar.JANUARY,1,0,0);
         long startMillis = beginTime.getTimeInMillis();
-        long endMillis = System.currentTimeMillis();
+        long endMillis = System.currentTimeMillis() + 84000000; //Sumamos un día
 
         ContentUris.appendId(builder, startMillis);
         ContentUris.appendId(builder, endMillis);
-        String[] args = new String[]{"2"};
+        String[] args = new String[]{"3"};
 
         Cursor eventCursor = contentResolver.query(builder.build(), new String[]{CalendarContract.Instances.TITLE,
-            CalendarContract.Instances.DESCRIPTION, CalendarContract.Instances.DTSTART, CalendarContract.Instances.DTEND}, CalendarContract.Instances.CALENDAR_ID + " = ?", args,null);
-
-        boolean isRecord = false;
+            CalendarContract.Instances.DESCRIPTION, CalendarContract.Instances.DTSTART, CalendarContract.Instances.DTEND},  "(("+CalendarContract.Instances.TITLE + " LIKE '%Record%') AND ("+CalendarContract.Instances.STATUS+" != "+CalendarContract.Instances.STATUS_CANCELED+"))", null,CalendarContract.Instances.DESCRIPTION + " desc");
+//CalendarContract.Instances.CALENDAR_ID + " = ? AND " + dont forget args
+        boolean isRecord = true;
         boolean hayRegistros = false;
 
-        while (eventCursor.moveToNext()){
+        if (eventCursor.moveToFirst()){
             final String title = eventCursor.getString(0);
-            final String description = eventCursor.getString(3);
+            final String description = eventCursor.getString(1); //Score guardado
+            hayRegistros = true;
 
-            if (title.length() == 14 && title == "Partida Jigsaw"){
-                hayRegistros = true;
-                long lastScore = finalScore;  ///no cumple hay que mirarlo de hacer de otra manera
-
-                if(finalScore > lastScore){
-                    isRecord=true;
-                }else{
-                    isRecord= false;
-                }
+            if(finalScore > Long.valueOf(description)){
+                isRecord=true;
+            }else{
+                isRecord= false;
             }
-        }
-        if(hayRegistros){
+            }
+
             return isRecord;
-        }else{
-            return !isRecord;
-        }
 
     }
 

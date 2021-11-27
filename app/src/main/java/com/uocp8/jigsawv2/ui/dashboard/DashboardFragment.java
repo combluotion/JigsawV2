@@ -34,6 +34,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.uocp8.jigsawv2.dao.impl.ImgPathDaoImpl;
+import com.uocp8.jigsawv2.model.ImgPath;
 import com.uocp8.jigsawv2.model.PictureModel;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.RecyclerViewAdaptador;
@@ -262,10 +264,28 @@ private void obtainGalleryImageAndCreateJigsaw()
     final Random random = new Random();
     final int count = imagesPath.size();
 
-    int number = random.nextInt(count);
-    String path = imagesPath.get(number);
+    ImgPathDaoImpl imgPathDao = new ImgPathDaoImpl(getContext());
+    ArrayList<String> pathsAlreadyDone = imgPathDao.retrievePaths();
+    String path = null;
+    for(int i=0; i < count; i++ ) {
+        int number = random.nextInt(count);
+        path = imagesPath.get(number);
+
+        if(pathsAlreadyDone != null && pathsAlreadyDone.contains(path))
+            path = null;
+    }
     if (currentBitmap != null)
         currentBitmap.recycle();
+
+    if(path == null) {
+        showToast("¡No tienes más imágenes para jugar! ¡Toma fotos!");
+        return;
+    }
+
+    //La creamos para que no se repita la próxima vez
+    ImgPath imgPath = new ImgPath(path);
+    imgPathDao.create(imgPath);
+
     currentBitmap = BitmapFactory.decodeFile(path);
     handler.post(new Runnable(){
         @Override

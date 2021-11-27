@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public final class DBUtil {
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 6;
     public static final String DATABASE_NAME = "jigsaw.db";
     public static final String JIGSAW_TABLE = "jigsaw_images";
     public static final String NAME_COLUMN = "name";
@@ -23,6 +23,9 @@ public final class DBUtil {
     public static final String DATE_SCORE = "datascore";
     public static final String TIME_SCORE ="timescore";
 
+    // Atributos para tabla IMGPATH
+    public static final String IMGPATH_TABLE = "jigsaw_imgpath";
+    public static final String IMGPATH ="imgpath";
 
     private DBUtil() {}
 
@@ -68,4 +71,20 @@ public final class DBUtil {
     /** all columns selection */
     public final static String[] ALL_SCORE_COLUMNS = new String[]{ID_USER_SCORE, USERNAME_SCORE,
             DATE_SCORE, TIME_SCORE};
+
+    /**Drop Score Table**/
+    public final static String DROP_SCORE_TABLE = "drop table if exists " + SCORE_TABLE;
+
+    //Create Gallery Images Path
+    public static final String CREATE_IMGPATH_TABLE = "create table if not"
+            + " exists " + IMGPATH_TABLE + " ("
+            +"idImgPath INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + IMGPATH + " TEXT);";
+
+    /** all columns selection */
+    public final static String[] ALL_IMGPATH_COLUMNS = new String[]{IMGPATH};
+
+    /**Drop Score Table**/
+    public final static String DROP_IMGPATH_TABLE = "drop table if exists " + IMGPATH_TABLE;
+
 }

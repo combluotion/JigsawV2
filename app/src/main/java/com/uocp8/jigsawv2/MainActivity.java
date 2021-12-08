@@ -2,6 +2,7 @@ package com.uocp8.jigsawv2;
 
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,10 +27,10 @@ import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    MediaPlayer mp;
+    //MediaPlayer mp;
     private ActivityMainBinding binding;
 
-
+    private ImageView musicButton;
 
 
 
@@ -49,10 +51,14 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
-    }
 
-    mp = MediaPlayer.create(this, R.raw.sound_long);
-    mp.start();
+
+        //mp = MediaPlayer.create(this, R.raw.sound_long);
+        //mp.start();
+
+        }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

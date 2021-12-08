@@ -33,13 +33,13 @@
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="284dp"
-        tools:layout_editor_absoluteY="549dp" />
+    <ImageView
+        android:id="@+id/musicButton"
+        android:layout_width="72dp"
+        android:layout_height="59dp"
+        app:srcCompat="@android:drawable/ic_menu_slideshow"
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="530dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

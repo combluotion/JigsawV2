@@ -154,7 +154,7 @@ public class Game extends AppCompatActivity {
         final GameViewModel gridView = findViewById(R.id.jigsaw_grid);
 
         if(!gridView.IsChangingActivity) {
-            stopService(new Intent(this, ServicioMusica.class));
+            ServicioMusica.PauseMusic();
         }
         gridView.IsChangingActivity = false;
         super.onPause();
@@ -162,7 +162,9 @@ public class Game extends AppCompatActivity {
 
     @Override
     protected void onPostResume() {
-        startService(new Intent(this, ServicioMusica.class));
+        if(!ServicioMusica.getUniqueIstance().isPlaying())
+            ServicioMusica.RestartMusic();
+
         super.onPostResume();
     }
 

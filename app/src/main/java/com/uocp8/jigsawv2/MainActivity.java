@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         isChangingActivity = false;
+        if(!ServicioMusica.getUniqueIstance().isLooping())
         startService(new Intent(this, ServicioMusica.class));
 
         }
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         if(!isChangingActivity) {
-            stopService(new Intent(this, ServicioMusica.class));
+            ServicioMusica.PauseMusic();
         }
         isChangingActivity = false;
         super.onPause();
@@ -92,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onPostResume() {
-        startService(new Intent(this, ServicioMusica.class));
+        if(!ServicioMusica.getUniqueIstance().isPlaying())
+        ServicioMusica.RestartMusic();
+
         super.onPostResume();
     }
 

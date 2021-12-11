@@ -33,7 +33,7 @@ public class Ayuda extends AppCompatActivity {
     @Override
     protected void onPause() {
         if(!isChangingActivity) {
-            stopService(new Intent(this, ServicioMusica.class));
+            ServicioMusica.PauseMusic();
         }
         isChangingActivity = false;
         super.onPause();
@@ -41,7 +41,9 @@ public class Ayuda extends AppCompatActivity {
 
     @Override
     protected void onPostResume() {
-        startService(new Intent(this, ServicioMusica.class));
+        if(!ServicioMusica.getUniqueIstance().isPlaying())
+           ServicioMusica.RestartMusic();
+
         super.onPostResume();
     }
 

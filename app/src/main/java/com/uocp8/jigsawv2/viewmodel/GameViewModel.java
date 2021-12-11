@@ -63,6 +63,8 @@ import java.util.Locale;
 
 public class GameViewModel extends GridView {
 
+    public boolean IsChangingActivity;
+
     Handler handlerUI = new Handler();
 
     private BitmapDrawable mHoverCell;
@@ -468,6 +470,7 @@ public class GameViewModel extends GridView {
     }
     public void endGame(String chronoTime, long seconds)
     {
+        IsChangingActivity = true;
         //Score Time:
         long finalScore = (long) (level.getScoreInitial() - seconds) * (level.getValue() / 2);
 

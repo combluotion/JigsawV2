@@ -143,6 +143,29 @@ public class Game extends AppCompatActivity {
         };
     }
 
+    @Override
+    protected void onDestroy() {
+        //stopService(new Intent(this, ServicioMusica.class));
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        final GameViewModel gridView = findViewById(R.id.jigsaw_grid);
+
+        if(!gridView.IsChangingActivity) {
+            stopService(new Intent(this, ServicioMusica.class));
+        }
+        gridView.IsChangingActivity = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onPostResume() {
+        startService(new Intent(this, ServicioMusica.class));
+        super.onPostResume();
+    }
+
 
 
 }

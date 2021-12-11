@@ -27,12 +27,11 @@ import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 
-    //MediaPlayer mp;
     private ActivityMainBinding binding;
 
     private ImageView musicButton;
 
-
+    private boolean isChangingActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +51,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
-
-        //mp = MediaPlayer.create(this, R.raw.sound_long);
-        //mp.start();
+        isChangingActivity = false;
+        startService(new Intent(this,ServicioMusica.class));
 
         }
 
@@ -79,5 +77,30 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onDestroy() {
+        //stopService(new Intent(this, ServicioMusica.class));
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        if(!isChangingActivity) {
+            stopService(new Intent(this, ServicioMusica.class));
+        }
+        isChangingActivity = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onPostResume() {
+        startService(new Intent(this, ServicioMusica.class));
+        super.onPostResume();
+    }
+
+    public void ChangingActivity(boolean value)
+    {
+        isChangingActivity = value;
+    }
 
 }

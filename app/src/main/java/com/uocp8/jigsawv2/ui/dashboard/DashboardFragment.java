@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.model.PictureModel;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.RecyclerViewAdaptador;
@@ -92,6 +93,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void createJigsaw(int which, int picture) {
+        ((MainActivity)getActivity()).ChangingActivity(true);
         Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), picture);
         //bitmap = GridUtil.getResizedBitmap(bitmap, 1480, 1300, false);
         JigsawGenerator task = new JigsawGenerator(getContext(), Difficulty.fromValue(which));

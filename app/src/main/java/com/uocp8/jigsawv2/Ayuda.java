@@ -2,6 +2,7 @@ package com.uocp8.jigsawv2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -9,7 +10,7 @@ import android.webkit.WebViewClient;
 public class Ayuda extends AppCompatActivity {
 
     private WebView webView;
-
+    public boolean isChangingActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +21,37 @@ public class Ayuda extends AppCompatActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
+    }
+    @Override
+    protected void onDestroy() {
+        //stopService(new Intent(this, ServicioMusica.class));
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        if(!isChangingActivity) {
+            stopService(new Intent(this, ServicioMusica.class));
+        }
+        isChangingActivity = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onPostResume() {
+        startService(new Intent(this, ServicioMusica.class));
+        super.onPostResume();
+    }
+
+    @Override
+    public void onBackPressed() {
+        ChangingActivity(true);
+        super.onBackPressed();
+    }
+
+    public void ChangingActivity(boolean value)
+    {
+        isChangingActivity = value;
     }
 
 

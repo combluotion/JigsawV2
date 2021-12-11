@@ -535,7 +535,7 @@ public class GameViewModel extends GridView {
                     Toast.makeText(getContext(), " ¡Nuevo Record! Añadido evento en calendario", Toast.LENGTH_LONG).show();*/
 
                     new NotificationsUtil("¡Nuevo Record!","Felicidades por tu score de "+String.valueOf(finalScore)
-                            , getContext().getSystemService(NotificationManager.class), getContext());
+                            , getContext().getSystemService(NotificationManager.class), getContext(), MainActivity.class);
 
 
                     /*insertar un evento en le calendario*/

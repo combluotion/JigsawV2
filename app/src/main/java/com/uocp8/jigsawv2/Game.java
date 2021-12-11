@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
-import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageView;
 
 import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.model.JigsawState;
 import com.uocp8.jigsawv2.model.LongParcelable;
+import com.uocp8.jigsawv2.service.ServicioMusica;
 import com.uocp8.jigsawv2.tasks.JigsawLoader;
 import com.uocp8.jigsawv2.viewmodel.GameViewModel;
 

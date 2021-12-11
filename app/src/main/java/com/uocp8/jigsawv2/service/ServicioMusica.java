@@ -1,4 +1,4 @@
-package com.uocp8.jigsawv2;
+package com.uocp8.jigsawv2.service;
 
 import android.app.Service;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
+
+import com.uocp8.jigsawv2.R;
 
 public class ServicioMusica extends Service {
 
@@ -16,6 +18,7 @@ public class ServicioMusica extends Service {
         super.onCreate();
 
         miReproductor = MediaPlayer.create(this, R.raw.sound_long);
+
 
         miReproductor.setLooping(true);
 

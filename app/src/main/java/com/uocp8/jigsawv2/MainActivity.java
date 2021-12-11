@@ -2,16 +2,11 @@ package com.uocp8.jigsawv2;
 
 
 
-import android.app.Activity;
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 
@@ -24,6 +19,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
+import com.uocp8.jigsawv2.service.ServicioMusica;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         isChangingActivity = false;
-        startService(new Intent(this,ServicioMusica.class));
+        startService(new Intent(this, ServicioMusica.class));
 
         }
 

@@ -30,12 +30,16 @@ public class JigsawDB extends SQLiteOpenHelper {
         db.execSQL(DBUtil.CREATE_JIGSAW_TABLE);
         // create table score
         db.execSQL(DBUtil.CREATE_SCORE_TABLE);
+        // create imgpath table
+        db.execSQL(DBUtil.CREATE_IMGPATH_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.d(TAG, "Upgrading database from " + oldVersion + "to " + newVersion);
         db.execSQL(DBUtil.DROP_JIGSAW_TABLE);
+        db.execSQL(DBUtil.DROP_SCORE_TABLE);
+        db.execSQL(DBUtil.DROP_IMGPATH_TABLE);
         onCreate(db);
     }
 }

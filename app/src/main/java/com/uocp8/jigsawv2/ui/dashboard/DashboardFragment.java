@@ -1,16 +1,31 @@
 package com.uocp8.jigsawv2.ui.dashboard;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.MediaStore;
+import android.service.controls.actions.FloatAction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -18,6 +33,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.uocp8.jigsawv2.dao.impl.ImgPathDaoImpl;
+import com.uocp8.jigsawv2.model.ImgPath;
 import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.model.PictureModel;
 import com.uocp8.jigsawv2.R;
@@ -25,9 +43,13 @@ import com.uocp8.jigsawv2.RecyclerViewAdaptador;
 import com.uocp8.jigsawv2.databinding.FragmentDashboardBinding;
 import com.uocp8.jigsawv2.model.Difficulty;
 import com.uocp8.jigsawv2.tasks.JigsawGenerator;
+import com.uocp8.jigsawv2.util.PermissionsUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DashboardFragment extends Fragment {
 
@@ -39,7 +61,13 @@ public class DashboardFragment extends Fragment {
     private RecyclerView recyclerViewPicture;
     private RecyclerViewAdaptador adaptadorPicture;
 
-    
+    private FloatingActionButton openCamera;
+    ActivityResultLauncher<Intent> mGetPhoto;
+
+    private FloatingActionButton galleryRun;
+    Handler handler = new Handler();
+    private Bitmap currentBitmap = null;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,13 +77,13 @@ public class DashboardFragment extends Fragment {
         binding = FragmentDashboardBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
+        /*final TextView textView = binding.textDashboard;
         dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
-        });
+        });*/
 
         return root;
     }
@@ -74,7 +102,73 @@ public class DashboardFragment extends Fragment {
             }
         });
         recyclerViewPicture.setAdapter(adaptadorPicture);
-    }
+
+        openCamera = getView().findViewById(R.id.openCamera);
+        ActivityResultLauncher<String> requestCameraPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        takePictureAndCreateJigsaw();
+                    }
+                });
+        mGetPhoto = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>(){
+            @Override
+            public void onActivityResult(ActivityResult data) {
+                if (data.getResultCode() == RESULT_OK) {
+                    Bundle extras = data.getData().getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    createJigsawFromBitmap(imageBitmap);
+                }
+            }
+
+        });
+
+        openCamera.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.CAMERA ) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // You can use the API that requires the permission.
+                    takePictureAndCreateJigsaw();
+                }  else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestCameraPermissionLauncher.launch(
+                            Manifest.permission.CAMERA );
+                }
+
+                }
+            });
+
+        galleryRun = getView().findViewById(R.id.galleryRun);
+        ActivityResultLauncher<String> requestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        // Permission is granted. Continue the action or workflow in your
+                        // app.
+                        obtainGalleryImageAndCreateJigsaw();
+                    }
+                });
+        galleryRun.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                //PermissionsUtil.checkPermission(42,getContext(), Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.READ_EXTERNAL_STORAGE ) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    // You can use the API that requires the permission.
+                    obtainGalleryImageAndCreateJigsaw();
+                }  else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(
+                            Manifest.permission.READ_EXTERNAL_STORAGE );
+                }
+                }
+        });
+        }
+
 
    private void showToast(String message){
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
@@ -102,6 +196,23 @@ public class DashboardFragment extends Fragment {
         task.execute(bitmap.copy(bitmap.getConfig(), true));
     }
 
+    private void createJigsawFromBitmap(Bitmap bitmap) {
+        new MaterialDialog.Builder(getContext())
+                .title(R.string.level_difficulty)
+                .items("Easy", "Medium", "Hard")
+                .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
+                    JigsawGenerator task = new JigsawGenerator(getContext(), Difficulty.fromValue(which));
+                    task.execute(bitmap.copy(bitmap.getConfig(), true));
+                    return true;
+                })
+                .positiveText(R.string.action_ok)
+                .negativeText(R.string.action_cancel)
+                .show();
+        //Bitmap bitmap = BitmapFactory.decodeResource(getContext().getResources(), picture);
+        //bitmap = GridUtil.getResizedBitmap(bitmap, 1480, 1300, false);
+
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -121,5 +232,75 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    private void takePictureAndCreateJigsaw()
+    {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getContext().getPackageManager()) != null) {
+            mGetPhoto.launch(takePictureIntent);
+        }
+    }
+private void obtainGalleryImageAndCreateJigsaw()
+{
+    String[] projection = new String[]{
+            MediaStore.Images.Media.DATA,
+    };
 
+    Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+    Cursor cur = getActivity().getContentResolver().query(images,
+            projection,
+            null,
+            null,
+            null
+    );
+
+    final ArrayList<String> imagesPath = new ArrayList<String>();
+    if (cur.moveToFirst()) {
+
+        int dataColumn = cur.getColumnIndex(
+                MediaStore.Images.Media.DATA);
+        do {
+            imagesPath.add(cur.getString(dataColumn));
+        } while (cur.moveToNext());
+    }
+    cur.close();
+    final Random random = new Random();
+    final int count = imagesPath.size();
+
+    ImgPathDaoImpl imgPathDao = new ImgPathDaoImpl(getContext());
+    ArrayList<String> pathsAlreadyDone = imgPathDao.retrievePaths();
+    String path = null;
+    for(int i=0; i < count; i++ ) {
+        int number = random.nextInt(count);
+        path = imagesPath.get(number);
+
+        if(pathsAlreadyDone != null && pathsAlreadyDone.contains(path))
+            path = null;
+    }
+    if (currentBitmap != null)
+        currentBitmap.recycle();
+
+    if(path == null) {
+        showToast("¡No tienes más imágenes para jugar! ¡Toma fotos!");
+        return;
+    }
+
+    //La creamos para que no se repita la próxima vez
+    ImgPath imgPath = new ImgPath(path);
+    imgPathDao.create(imgPath);
+
+    currentBitmap = BitmapFactory.decodeFile(path);
+    handler.post(new Runnable(){
+        @Override
+        public void run() {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            currentBitmap.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+            ByteArrayInputStream isBm = new ByteArrayInputStream(
+                    baos.toByteArray());
+            currentBitmap = BitmapFactory.decodeStream(isBm,null,null);
+            createJigsawFromBitmap(currentBitmap);
+        }
+    });
+
+
+}
 }

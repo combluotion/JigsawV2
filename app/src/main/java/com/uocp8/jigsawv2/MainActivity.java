@@ -2,6 +2,7 @@ package com.uocp8.jigsawv2;
 
 
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
+import com.uocp8.jigsawv2.util.NotificationsUtil;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         mp = MediaPlayer.create(this, R.raw.sound_long);
         mp.start();
+
+
     }
 
 

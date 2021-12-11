@@ -12,6 +12,7 @@ import android.animation.ObjectAnimator;
 import android.animation.TypeEvaluator;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -60,6 +61,7 @@ import com.uocp8.jigsawv2.model.ImageEntity;
 import com.uocp8.jigsawv2.model.MyCalendar;
 import com.uocp8.jigsawv2.model.Score;
 import com.uocp8.jigsawv2.util.GridUtil;
+import com.uocp8.jigsawv2.util.NotificationsUtil;
 import com.uocp8.jigsawv2.util.PermissionsUtil;
 
 import java.text.SimpleDateFormat;
@@ -531,6 +533,10 @@ public class GameViewModel extends GridView {
                     cv.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance().getTimeZone().getID());
                     Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
                     Toast.makeText(getContext(), " ¡Nuevo Record! Añadido evento en calendario", Toast.LENGTH_LONG).show();*/
+
+                    new NotificationsUtil("¡Nuevo Record!","Felicidades por tu score de "+String.valueOf(finalScore)
+                            , getContext().getSystemService(NotificationManager.class), getContext());
+
 
                     /*insertar un evento en le calendario*/
                     Intent intent = new Intent(getContext(), MainActivity.class);

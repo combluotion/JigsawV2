@@ -50,4 +50,7 @@
 
     //Home->HomeViewModel
     <string name="the_day">, the day</string>
+
+    //dashboard
+    <string name="no_images">You do not have any more pictures to play with! Take pictures!</string>
 </resources>

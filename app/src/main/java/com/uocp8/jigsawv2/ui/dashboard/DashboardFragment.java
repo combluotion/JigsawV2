@@ -176,7 +176,7 @@ public class DashboardFragment extends Fragment {
     private void openCreateJigsawDialog(int picture) {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.level_difficulty)
-                .items("Easy", "Medium", "Hard")
+                .items(getContext().getString(R.string.level_easy),getContext().getString(R.string.level_med), getContext().getString(R.string.level_hard))
                 .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
                     createJigsaw(which, picture);
                     return true;
@@ -199,7 +199,7 @@ public class DashboardFragment extends Fragment {
     private void createJigsawFromBitmap(Bitmap bitmap) {
         new MaterialDialog.Builder(getContext())
                 .title(R.string.level_difficulty)
-                .items("Easy", "Medium", "Hard")
+                .items(getContext().getString(R.string.level_easy),getContext().getString(R.string.level_med), getContext().getString(R.string.level_hard))
                 .itemsCallbackSingleChoice(0, (dialog, view, which, text) -> {
                     JigsawGenerator task = new JigsawGenerator(getContext(), Difficulty.fromValue(which));
                     task.execute(bitmap.copy(bitmap.getConfig(), true));
@@ -280,7 +280,7 @@ private void obtainGalleryImageAndCreateJigsaw()
         currentBitmap.recycle();
 
     if(path == null) {
-        showToast("¡No tienes más imágenes para jugar! ¡Toma fotos!");
+        showToast(getContext().getString(R.string.no_images));
         return;
     }
 

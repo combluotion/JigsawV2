@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -473,7 +474,7 @@ public class GameViewModel extends GridView {
             long seconds = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
 
             chronometer.stop();
-            Toast.makeText(getContext(),"¡Felicidades! Has ganado.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),R.string.Congratulation_youwin, Toast.LENGTH_LONG).show();
 
             handlerUI.postDelayed(new Runnable() {
                 @Override
@@ -494,7 +495,7 @@ public class GameViewModel extends GridView {
 
         //Ask for Name
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(chronoTime +" ! Inserta tu nombre:");
+        builder.setTitle(chronoTime + " " + getContext().getString(R.string.title_insert_name));
 
         //Indicamos el input
         final EditText input = new EditText(getContext());
@@ -503,7 +504,7 @@ public class GameViewModel extends GridView {
         builder.setView(input);
 
         //Añadimos botones
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.action_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(getContext(), input.getText().toString(), Toast.LENGTH_LONG).show();
@@ -515,7 +516,7 @@ public class GameViewModel extends GridView {
                 Score score = new Score(nombre,currentDateandTime,finalScore);
                 if (nombre.isEmpty()){
 
-                    score.setName("No name");
+                    score.setName(getContext().getString(R.string.Score_noName));
 
                 }
                     scoreDao.create(score);
@@ -547,7 +548,7 @@ public class GameViewModel extends GridView {
 
                    Intent calendar = new Intent(Intent.ACTION_INSERT)
                             .setData(CalendarContract.Events.CONTENT_URI)
-                            .putExtra(CalendarContract.Events.TITLE,"Record Partida Jigsaw")
+                            .putExtra(CalendarContract.Events.TITLE,getContext().getString(R.string.title_calendar_recordGame))
                             .putExtra(CalendarContract.Events.DESCRIPTION, Long.toString(finalScore));
 
                             getContext().startActivity(calendar);
@@ -563,7 +564,7 @@ public class GameViewModel extends GridView {
 
             }
         });
-        builder.setNegativeButton("No quiero", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.action_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();

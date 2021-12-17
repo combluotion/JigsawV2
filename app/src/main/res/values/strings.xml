@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">JigsawV2</string>
     <string name="title_home">Home</string>
-    <string name="title_dashboard">Elige tu imagen</string>
+    <string name="title_dashboard">Select your image</string>
     <string name="title_notifications">Notifications</string>
     <string name="action_new_drawing">New Drawing</string>
     <string name="action_ok">OK</string>
@@ -32,5 +32,12 @@
     <string name="title_jigsaw_history">History</string>
     <string name="title_activity_jigsaw">Draw</string>
 
-    <string name="MediaPlayer">Audio con Media Player</string>
+    <string name="MediaPlayer">Audio with Media Player</string>
+    //GameViewModel
+    <string name="title_insert_name">Insert your name:</string>
+    <string name="Score_noName">No name</string>
+    <string name="title_new_record">¡New record!</string>
+    <string name="message_congratulations_score">Congratulations on your score of </string>
+    <string name="title_calendar_recordGame">Record Game Jigsaw</string>
+    <string name="Congratulation_youwin">¡Congratulation you win!</string>
 </resources>

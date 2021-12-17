@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.uocp8.jigsawv2.MainActivity;
+import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.dao.ScoreDao;
 import com.uocp8.jigsawv2.dao.impl.ScoreDaoImpl;
 import com.uocp8.jigsawv2.model.Score;
@@ -52,7 +53,7 @@ public class HomeViewModel extends AndroidViewModel {
         List<Score> scores = scoreDao.retrieveScores();
         ArrayList<String> scoreStrings = new ArrayList<String>();
 
-        scores.forEach((x) -> scoreStrings.add(x.getName()+", "+x.getTime() + ", el día " +x.getDate()));
+        scores.forEach((x) -> scoreStrings.add(x.getName()+", "+x.getTime() + getApplication().getApplicationContext().getString(R.string.the_day) +" "+x.getDate())); //", el día "
         mListView.setValue(scoreStrings);
 
         return mListView;

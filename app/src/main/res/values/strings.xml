@@ -44,4 +44,10 @@
     
     //Game
     <string name="level">Level</string>
+
+    //dificulty
+    <string name="unknown_dificulty">Unknown difficulty level selected.</string>
+
+    //Home->HomeViewModel
+    <string name="the_day">, the day</string>
 </resources>

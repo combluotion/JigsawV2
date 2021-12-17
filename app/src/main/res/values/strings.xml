@@ -33,6 +33,7 @@
     <string name="title_activity_jigsaw">Draw</string>
 
     <string name="MediaPlayer">Audio with Media Player</string>
+    
     //GameViewModel
     <string name="title_insert_name">Insert your name:</string>
     <string name="Score_noName">No name</string>
@@ -40,4 +41,7 @@
     <string name="message_congratulations_score">Congratulations on your score of </string>
     <string name="title_calendar_recordGame">Record Game Jigsaw</string>
     <string name="Congratulation_youwin">¡Congratulation you win!</string>
+    
+    //Game
+    <string name="level">Level</string>
 </resources>

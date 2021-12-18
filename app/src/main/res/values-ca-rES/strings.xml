@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">JigsawV2</string>
+    <string name="title_home">Principal</string>
+    <string name="title_dashboard">Selecciona la imatge</string>
+    <string name="title_notifications">Notificacions</string>
+    <string name="action_new_drawing">Nou dibuix</string>
+    <string name="action_ok">Dacord</string>
+    <string name="action_cancel">Cancel·lar</string>
+    <string name="action_pause">Pausa</string>
+    <string name="action_reset">Reiniciar</string>
+    <string name="action_undo">Desfer</string>
+    <string name="action_redo">Refer</string>
+    <string name="action_new_q">Perdra el dibuix actual. Vol continuar?</string>
+    <string name="brush_sml">Petit</string>
+    <string name="brush_med">Mitja</string>
+    <string name="brush_lrg">Gran</string>
+    <string name="brush_lrgst">Mes gran</string>
+    <string name="level_difficulty">Escollir un nivell de dificultat:</string>
+    <string name="level_easy">Facil</string>
+    <string name="level_med">Mitjana</string>
+    <string name="level_hard">Dificil</string>
+    <string name="options_new">Nou</string>
+    <string name="options_paint">Selector de color</string>
+    <string name="options_erase">Suprimir</string>
+    <string name="title_jigsaw_detail">Jigsaw detall</string>
+    <string name="title_jigsaw_history">Historia</string>
+    <string name="title_activity_jigsaw">Dibuixar</string>
+    <string name="MediaPlayer">Audio amb media player</string>
+    <string name="title_insert_name">Introduir el vostre nom:</string>
+    <string name="Score_noName">Sense nom</string>
+    <string name="title_new_record">¡Nou record!</string>
+    <string name="message_congratulations_score">Felicitats pel teu resultat de</string>
+    <string name="title_calendar_recordGame">Record del joc Jigsaw</string>
+    <string name="Congratulation_youwin">¡Felicitats voste guanya!</string>
+    <string name="level">Nivell</string>
+    <string name="unknown_dificulty">No ha seleccionat cap opció de dificultat</string>
+    <string name="the_day">, al dia</string>
+    <string name="no_images">¡No hi han mes fotografies per jugar! Utilitza la camara</string>
+    <string name="open_cam">Botó per obrir la camara</string>
+    <string name="button_gallery">Botó per executar la galeria</string>
+    <string name="help">Ajuda</string>
+</resources>

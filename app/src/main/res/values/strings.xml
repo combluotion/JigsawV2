@@ -23,7 +23,7 @@
     <string name="level_med">Medium</string>
     <string name="level_hard">Hard</string>
 
-    <string name="options_jigsaw">Jigsaw</string>
+    <string name="options_jigsaw" translatable="false">Jigsaw</string>
     <string name="options_new">New</string>
     <string name="options_paint">Color Picker</string>
     <string name="options_erase">Erase</string>
@@ -53,4 +53,11 @@
 
     //dashboard
     <string name="no_images">You do not have any more pictures to play with! Take pictures!</string>
+
+    //Fragment Dashboard xml
+    <string name="open_cam">Button to open the camera</string>
+    <string name="button_gallery">Button for gallery run</string>
+
+    //Menu ayuda
+    <string name="help">Help</string>
 </resources>

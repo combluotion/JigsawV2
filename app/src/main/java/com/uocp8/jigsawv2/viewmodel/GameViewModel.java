@@ -495,7 +495,7 @@ public class GameViewModel extends GridView {
 
         //Ask for Name
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(chronoTime + " " + getContext().getString(R.string.title_insert_name));
+        builder.setTitle(chronoTime + "Insert your name: " ); //---revisar + getContext().getString(R.string.title_insert_name)
 
         //Indicamos el input
         final EditText input = new EditText(getContext());

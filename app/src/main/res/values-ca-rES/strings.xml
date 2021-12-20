@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">JigsawV2</string>
     <string name="title_home">Principal</string>
-    <string name="title_dashboard">Selecciona la imatge</string>
+    <string name="title_dashboard">Seleccionar la imatge</string>
     <string name="title_notifications">Notificacions</string>
     <string name="action_new_drawing">Nou dibuix</string>
     <string name="action_ok">Dacord</string>
@@ -11,7 +11,7 @@
     <string name="action_reset">Reiniciar</string>
     <string name="action_undo">Desfer</string>
     <string name="action_redo">Refer</string>
-    <string name="action_new_q">Perdra el dibuix actual. Vol continuar?</string>
+    <string name="action_new_q">Perdrà el dibuix actual. Vol continuar?</string>
     <string name="brush_sml">Petit</string>
     <string name="brush_med">Mitja</string>
     <string name="brush_lrg">Gran</string>

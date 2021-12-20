@@ -495,7 +495,7 @@ public class GameViewModel extends GridView {
 
         //Ask for Name
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(chronoTime + "Insert your name: " ); //---revisar + getContext().getString(R.string.title_insert_name)
+        builder.setTitle(chronoTime + " " + getContext().getString(R.string.title_insert_name)); //---revisar + getContext().getString(R.string.title_insert_name)
 
         //Indicamos el input
         final EditText input = new EditText(getContext());
@@ -538,7 +538,7 @@ public class GameViewModel extends GridView {
                     Uri uri = cr.insert(CalendarContract.Events.CONTENT_URI, cv);
                     Toast.makeText(getContext(), " ¡Nuevo Record! Añadido evento en calendario", Toast.LENGTH_LONG).show();*/
 
-                    new NotificationsUtil("¡Nuevo Record!","Felicidades por tu score de "+String.valueOf(finalScore)
+                    new NotificationsUtil(getContext().getString(R.string.title_new_record),getContext().getString(R.string.message_congratulations_score)+String.valueOf(finalScore)
                             , getContext().getSystemService(NotificationManager.class), getContext(), MainActivity.class);
 
 

@@ -33,8 +33,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 import com.uocp8.jigsawv2.dao.impl.ImgPathDaoImpl;
+import com.uocp8.jigsawv2.model.FirebasePicModel;
 import com.uocp8.jigsawv2.model.ImgPath;
 import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.model.PictureModel;
@@ -56,10 +62,9 @@ public class DashboardFragment extends Fragment {
     private DashboardViewModel dashboardViewModel;
     private FragmentDashboardBinding binding;
 
-
-
     private RecyclerView recyclerViewPicture;
     private RecyclerViewAdaptador adaptadorPicture;
+    private List<PictureModel> pictureModels;
 
     private FloatingActionButton openCamera;
     ActivityResultLauncher<Intent> mGetPhoto;
@@ -67,6 +72,8 @@ public class DashboardFragment extends Fragment {
     private FloatingActionButton galleryRun;
     Handler handler = new Handler();
     private Bitmap currentBitmap = null;
+
+    private StorageReference mStorageRef;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -85,6 +92,8 @@ public class DashboardFragment extends Fragment {
             }
         });*/
 
+
+
         return root;
     }
 
@@ -94,14 +103,23 @@ public class DashboardFragment extends Fragment {
         recyclerViewPicture = (RecyclerView) getView().findViewById(R.id.recyclerPicture);
         recyclerViewPicture.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adaptadorPicture = new RecyclerViewAdaptador(obtenerPictures(), new RecyclerViewAdaptador.ItemClickListener() {
+        pictureModels = obtenerPictures();
+
+        adaptadorPicture = new RecyclerViewAdaptador(pictureModels, new RecyclerViewAdaptador.ItemClickListener() {
             @Override
             public void onItemClick(PictureModel picture) {
                 showToast(picture.getPicture() + "Clicked!");
-                openCreateJigsawDialog(picture.getImgPicture());
+                if(picture.getImgPicture() != 0) {
+                    openCreateJigsawDialog(picture.getImgPicture());
+                }
+                else{
+                    createJigsawFromBitmap(picture.getFireBasePicture());
+                }
             }
         });
         recyclerViewPicture.setAdapter(adaptadorPicture);
+
+        obtenerFireBasePictures();
 
         openCamera = getView().findViewById(R.id.openCamera);
         ActivityResultLauncher<String> requestCameraPermissionLauncher =
@@ -219,9 +237,46 @@ public class DashboardFragment extends Fragment {
         binding = null;
     }
 
+    public void obtenerFireBasePictures()
+    {
+        //Obtain firebase pictures
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        mStorageRef.listAll()
+                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                    @Override
+                    public void onSuccess(ListResult listResult) {
+                        for (StorageReference item : listResult.getItems()) {
+                            final long ONE_MEGABYTE = 1024 * 1024;
+                            String pictureName = item.getName();
 
+                            item.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Bitmap pictureBitmap  = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+                                    pictureModels.add(new PictureModel(pictureName, pictureBitmap));
+                                    adaptadorPicture.notifyItemInserted(pictureModels.size());
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception exception) {
+                                    // Handle any errors
+                                }
+                            });
+                        }
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Uh-oh, an error occurred!
+                    }
+                });
+    }
     public List<PictureModel> obtenerPictures() {
+
         List<PictureModel> picture = new ArrayList<>();
+
         picture.add(new PictureModel("Michael Cera", R.drawable.image1));
         picture.add(new PictureModel("Steve Buscemi", R.drawable.image2));
         //picture.add(new PictureModel("Imagen 3", R.drawable.image3));

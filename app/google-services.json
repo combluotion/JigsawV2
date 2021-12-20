@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "424098457066",
+    "project_id": "jigsaw-f8f96",
+    "storage_bucket": "jigsaw-f8f96.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424098457066:android:3cddbd87f1cc0974233e93",
+        "android_client_info": {
+          "package_name": "com.uocp8.jigsawv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "424098457066-0g43srobvqiha3jaqt4tlvjp96o7i5qc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWgjKkNF4jJayFKHCMKW76R40oGitR1IY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "424098457066-0g43srobvqiha3jaqt4tlvjp96o7i5qc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

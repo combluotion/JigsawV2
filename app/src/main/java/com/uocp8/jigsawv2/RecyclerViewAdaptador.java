@@ -45,7 +45,13 @@ public class RecyclerViewAdaptador extends RecyclerView.Adapter<RecyclerViewAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.picture.setText(pictureLista.get(position).getPicture());
-        holder.imgPicture.setImageResource(pictureLista.get(position).getImgPicture());
+
+        if(pictureLista.get(position).getImgPicture() != 0) {
+            holder.imgPicture.setImageResource(pictureLista.get(position).getImgPicture());
+        }
+        else{
+            holder.imgPicture.setImageBitmap(pictureLista.get(position).getFireBasePicture());
+        }
 
         holder.itemView.setOnClickListener(view -> {
             mItemListener.onItemClick(pictureLista.get(position));

@@ -78,7 +78,8 @@ public class Game extends AppCompatActivity {
             if(parcelable != null) {
                 task.execute(parcelable.getData());
             }
-            level =(Difficulty) bundle.get(getApplicationContext().getString(R.string.level)); //"level"
+            //level =(Difficulty) bundle.get(getApplicationContext().getString(R.string.level)); //"level"
+            level =(Difficulty) bundle.get("level");
         }
 
         gridView.setDifficultyLevel(level);

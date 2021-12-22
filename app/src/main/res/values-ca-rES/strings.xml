@@ -40,4 +40,5 @@
     <string name="open_cam">Botó per obrir la camara</string>
     <string name="button_gallery">Botó per executar la galeria</string>
     <string name="help">Ajuda</string>
+    <string name="action_clicked">Premut!</string>
 </resources>

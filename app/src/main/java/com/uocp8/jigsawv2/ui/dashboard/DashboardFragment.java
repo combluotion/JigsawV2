@@ -97,7 +97,7 @@ public class DashboardFragment extends Fragment {
         adaptadorPicture = new RecyclerViewAdaptador(obtenerPictures(), new RecyclerViewAdaptador.ItemClickListener() {
             @Override
             public void onItemClick(PictureModel picture) {
-                showToast(picture.getPicture() + "Clicked!");
+                showToast(picture.getPicture() + " " + getContext().getString(R.string.action_clicked));
                 openCreateJigsawDialog(picture.getImgPicture());
             }
         });

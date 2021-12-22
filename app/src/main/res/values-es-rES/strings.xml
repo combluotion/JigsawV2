@@ -40,4 +40,5 @@
     <string name="open_cam">Boton para abrir la cámara</string>
     <string name="button_gallery">Boton para ejecutar la galeria</string>
     <string name="help">Ayuda</string>
+    <string name="action_clicked">Pulsado!</string>
 </resources>

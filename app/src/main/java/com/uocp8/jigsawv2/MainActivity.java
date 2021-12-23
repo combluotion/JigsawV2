@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean isChangingActivity;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -65,46 +66,11 @@ public class MainActivity extends AppCompatActivity {
         if(!ServicioMusica.getUniqueIstance().isLooping())
         startService(new Intent(this, ServicioMusica.class));
 
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
-                new AuthUI.IdpConfig.EmailBuilder().build());
-
-
-        // Create and launch sign-in intent
-        Intent signInIntent = AuthUI.getInstance()
-                .createSignInIntentBuilder()
-                .setAvailableProviders(providers)
-                .setIsSmartLockEnabled(false)
-                .build();
-        signInLauncher.launch(signInIntent);
 
         }
 
 
-    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
-            new FirebaseAuthUIActivityResultContract(),
-            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
-                @Override
-                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
-                    onSignInResult(result);
-                }
-            }
-    );
 
-    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
-        IdpResponse response = result.getIdpResponse();
-        if (result.getResultCode() == RESULT_OK) {
-            // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            // ...
-            Toast.makeText(getApplicationContext(),"Conectado!",Toast.LENGTH_LONG).show();
-        } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
-            // ...
-            Toast.makeText(getApplicationContext(),"Error Connecting",Toast.LENGTH_LONG).show();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -10,6 +10,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,25 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.R;
+import com.uocp8.jigsawv2.dao.FireBaseScoreDao;
+import com.uocp8.jigsawv2.dao.impl.FireBaseScoreDaoImpl;
 import com.uocp8.jigsawv2.databinding.FragmentHomeBinding;
+import com.uocp8.jigsawv2.model.FireBaseScore;
+import com.uocp8.jigsawv2.model.Score;
 import com.uocp8.jigsawv2.service.ServicioMusica;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class HomeFragment extends Fragment {
 
@@ -43,6 +57,8 @@ public class HomeFragment extends Fragment {
     private ImageButton chooseMusic;
     ActivityResultLauncher<Intent> mChooseMusic;
     private ImageButton muteMusic;
+
+    private FireBaseScoreDao dao;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -122,10 +138,42 @@ public class HomeFragment extends Fragment {
             }
         });
 
+
+        dao = new FireBaseScoreDaoImpl();
+        LoadFireBaseData();
+
+
         return root;
     }
 
+    private void LoadFireBaseData()
+    {
+        dao.retrieve().addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // This method is called once with the initial value and again
+            // whenever data at this location is updated.
+            ArrayList<String> scoreStrings = new ArrayList<String>();
+            for(DataSnapshot data : dataSnapshot.getChildren())
+            {
+                HashMap score = (HashMap) data.getValue();
+                scoreStrings.add(score.get("name") + ", " + score.get("time"));
+            }
+            Collections.reverse(scoreStrings);
+            ArrayAdapter<String> itemsAdapter =
+                    new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, scoreStrings);
 
+            ListView listView = (ListView) getView().findViewById(R.id.firebasescore_list);
+            listView.setAdapter(itemsAdapter);
+        }
+
+        @Override
+        public void onCancelled(DatabaseError error) {
+            // Failed to read value
+            Log.w("TAG", "Failed to read value.", error.toException());
+        }
+    });
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();

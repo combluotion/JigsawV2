@@ -51,12 +51,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.uocp8.jigsawv2.MainActivity;
 import com.uocp8.jigsawv2.R;
 import com.uocp8.jigsawv2.adapters.OrderableAdapter;
+import com.uocp8.jigsawv2.dao.FireBaseScoreDao;
 import com.uocp8.jigsawv2.dao.ScoreDao;
+import com.uocp8.jigsawv2.dao.impl.FireBaseScoreDaoImpl;
 import com.uocp8.jigsawv2.dao.impl.ScoreDaoImpl;
 import com.uocp8.jigsawv2.model.Difficulty;
+import com.uocp8.jigsawv2.model.FireBaseScore;
 import com.uocp8.jigsawv2.model.ImageEntity;
 import com.uocp8.jigsawv2.model.MyCalendar;
 import com.uocp8.jigsawv2.model.Score;
@@ -519,6 +523,11 @@ public class GameViewModel extends GridView {
 
                 }
                     scoreDao.create(score);
+
+                // Write a message to the database
+                FireBaseScoreDao dao = new FireBaseScoreDaoImpl();
+                FireBaseScore scoreTest = new FireBaseScore(FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), finalScore);
+                dao.add(scoreTest);
 
                 if (recuperacionPuntuacionCalendario(finalScore)) {
                    /* MyCalendar[] calendarios = PermissionsUtil.getCalendar(getContext());

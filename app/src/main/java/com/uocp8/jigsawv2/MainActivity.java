@@ -9,19 +9,31 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
+import com.firebase.ui.auth.IdpResponse;
+import com.firebase.ui.auth.data.model.FirebaseAuthUIAuthenticationResult;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.uocp8.jigsawv2.databinding.ActivityMainBinding;
 import com.uocp8.jigsawv2.service.ServicioMusica;
 import com.uocp8.jigsawv2.util.NotificationsUtil;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,9 +65,46 @@ public class MainActivity extends AppCompatActivity {
         if(!ServicioMusica.getUniqueIstance().isLooping())
         startService(new Intent(this, ServicioMusica.class));
 
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.EmailBuilder().build());
+
+
+        // Create and launch sign-in intent
+        Intent signInIntent = AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .setIsSmartLockEnabled(false)
+                .build();
+        signInLauncher.launch(signInIntent);
+
         }
 
 
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new FirebaseAuthUIActivityResultContract(),
+            new ActivityResultCallback<FirebaseAuthUIAuthenticationResult>() {
+                @Override
+                public void onActivityResult(FirebaseAuthUIAuthenticationResult result) {
+                    onSignInResult(result);
+                }
+            }
+    );
+
+    private void onSignInResult(FirebaseAuthUIAuthenticationResult result) {
+        IdpResponse response = result.getIdpResponse();
+        if (result.getResultCode() == RESULT_OK) {
+            // Successfully signed in
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            // ...
+            Toast.makeText(getApplicationContext(),"Conectado!",Toast.LENGTH_LONG).show();
+        } else {
+            // Sign in failed. If response is null the user canceled the
+            // sign-in flow using the back button. Otherwise check
+            // response.getError().getErrorCode() and handle the error.
+            // ...
+            Toast.makeText(getApplicationContext(),"Error Connecting",Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
